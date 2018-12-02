@@ -1,19 +1,19 @@
-function inference() {
-  var thisFileId = SpreadsheetApp.getActive().getId();
-  var thisFile = DriveApp.getFileById(thisFileId);
-  var folder_it = thisFile.getParents();
-  var folder = folder_it.next();
-  var folder_name = folder.getName();
-  var data = combineTables(folder);
+function nextIter() {
+  var iteration = PropertiesService.getScriptProperties().getProperty('iteration');
+  iteration = Number(iteration);
+  inference(iteration);
+  PropertiesService.getScriptProperties().setProperty('iteration', iteration + 1);
+}
+
+
+function refresh() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  
-  if (ss.getSheetByName('out') == null) {
-    ss.insertSheet('out');
+  if (ss.getSheetByName('out')) {
+    var outSheet = ss.getSheetByName('out');
+    try{
+      var range = outSheet.getRange(1, 1, outSheet.getLastRow(), outSheet.getLastColumn());
+      range.clear();
+    } catch (e) {}
   }
-  var outSheet = ss.getSheetByName('out');
-  try{
-    var range = outSheet.getRange(1, 1, outSheet.getLastRow(), outSheet.getLastColumn());
-    range.clear();
-  } catch (e) {}
-  outSheet.getRange(5,1,data.length,43).setValues(data);
+  PropertiesService.getScriptProperties().setProperty('iteration', 0);
 }

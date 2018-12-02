@@ -1,4 +1,4 @@
-function combineTables(folder) {
+function combineTables(folder, depth, iteration) {
 //  folder = folder || DriveApp.getRootFolder();
   var name = folder.getName();
   var files = folder.getFilesByType(MimeType.GOOGLE_SHEETS);
@@ -19,10 +19,27 @@ function combineTables(folder) {
   
   var subfolders = folder.getFolders();
   
-  while (subfolders.hasNext()) {
-    var data_folder = combineTables(subfolders.next());
-    if (data_folder != []) {
-      joined_data = joined_data.concat(data_folder);
+  var counter = 0;
+  var n_folds = 20;
+  if (depth > 0) {
+    while (subfolders.hasNext() && counter < iteration * n_folds) {
+      subfolders.next();
+      counter += 1;
+    }
+    while (subfolders.hasNext() && counter < (iteration+1) * n_folds) {
+      //  while (subfolders.hasNext()) {
+      var subfolder = subfolders.next();
+      var subfolder_name = subfolder.getName();
+//      if (subfolder_name != 'Photo') {
+      var data_folder = combineTables(subfolder, depth - 1, iteration);
+      if (data_folder != []) {
+        joined_data = joined_data.concat(data_folder);
+      }
+//      }
+      counter += 1;
+    }
+    if (!subfolders.hasNext()) {
+      showAlert();
     }
   }
   return joined_data;
