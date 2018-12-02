@@ -1,11 +1,5 @@
 function combineSheets(id) {
-
-//  var doc = SpreadsheetApp.getActiveSpreadsheet();
   var doc = SpreadsheetApp.openById(id); 
-//  if (doc.getSheetByName('out') == null) {
-//    doc.insertSheet('out');
-//  }
-//  var outSheet = doc.getSheetByName('out');
   var outdata = [];
   
   var sheets = doc.getSheets();
@@ -27,6 +21,5 @@ function combineSheets(id) {
       }
     }
   }
-//  outSheet.getRange(1,1,outdata.length,75).setValues(outdata);
   return outdata;
 }
