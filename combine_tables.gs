@@ -36,7 +36,7 @@ function combineTables(folder, depth, iteration) {
       counter += 1;
     }
     if (!subfolders.hasNext()) {
-      showAlert();
+      PropertiesService.getScriptProperties().setProperty('last', 'true');
     }
   }
   return joined_data;

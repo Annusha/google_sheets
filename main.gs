@@ -16,4 +16,5 @@ function refresh() {
     } catch (e) {}
   }
   PropertiesService.getScriptProperties().setProperty('iteration', 0);
+  PropertiesService.getScriptProperties().setProperty('last', 'false');
 }
